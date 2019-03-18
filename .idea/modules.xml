@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/FitnessMall.iml" filepath="$PROJECT_DIR$/FitnessMall.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fm-gateway/fm-gateway.iml" filepath="$PROJECT_DIR$/fm-gateway/fm-gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fm-item/fm-item.iml" filepath="$PROJECT_DIR$/fm-item/fm-item.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fm-item/fm-item-interface/fm-item-interface.iml" filepath="$PROJECT_DIR$/fm-item/fm-item-interface/fm-item-interface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fm-item/fm-item-service/fm-item-service.iml" filepath="$PROJECT_DIR$/fm-item/fm-item-service/fm-item-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fm-registry/fm-registry.iml" filepath="$PROJECT_DIR$/fm-registry/fm-registry.iml" />
+    </modules>
+  </component>
+</project>
