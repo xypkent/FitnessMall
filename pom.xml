@@ -11,6 +11,7 @@
         <module>fm-registry</module>
         <module>fm-gateway</module>
         <module>fm-item</module>
+        <module>fm-common</module>
     </modules>
     <packaging>pom</packaging>
 
