@@ -1,12 +1,12 @@
 server:
-  port: 8081
+  port: 8082
 spring:
   application:
-    name: item-service
-  datasource:
-    url: jdbc:mysql://localhost:3306/fitnessmall
-    username: root
-    password: 123456
+    name: upload-service
+  servlet:
+    multipart:
+      max-file-size: 5MB # 限制文件上传的大小
+# Eureka
 eureka:
   client:
     service-url:
@@ -17,7 +17,3 @@ eureka:
     prefer-ip-address: true
     ip-address: 127.0.0.1
     instance-id: ${spring.application.name}:${server.port}
-#查看SQL语句
-mybatis:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

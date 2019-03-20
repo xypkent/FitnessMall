@@ -12,6 +12,7 @@
         <module>fm-gateway</module>
         <module>fm-item</module>
         <module>fm-common</module>
+        <module>fm-upload</module>
     </modules>
     <packaging>pom</packaging>
 
