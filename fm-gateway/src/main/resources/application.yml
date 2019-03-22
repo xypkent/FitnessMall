@@ -16,7 +16,16 @@ zuul:
   prefix: /api # 添加路由前缀
   retryable: true
   routes:
+    # 微服务名: 要映射到到地址
     item-service: /item/** # 将商品微服务映射到/item/**
+    search-service: /search/** # 将查询微服务映射到/search/**
+    user-service: /user/**
+    auth-service: /auth/**
+    cart-service: /cart/**
+    upload-service:
+      path: /upload/** # 将上传微服务映射到/upload/**
+      serviceId: upload-service
+      strip-prefix : false
 ribbon:
   ConnectTimeout: 1000 # 连接超时时间(ms)
   ReadTimeout: 3500 # 通信超时时间(ms)

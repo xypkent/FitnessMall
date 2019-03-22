@@ -3,6 +3,7 @@ package com.fm.item.web;
 import com.fm.common.vo.PageResult;
 import com.fm.item.service.BrandService;
 import com.fn.item.pojo.Brand;
+import com.fn.item.vo.BrandVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +46,7 @@ public class BrandController {
      * 新增品牌
      *
      * @param brand
-     * @param cids
+     * @param cids 品牌所在的分类ID（多个分类）
      * @return
      */
     @PostMapping  // 传入 "1,2,3"的字符串可以解析为列表
@@ -54,37 +55,65 @@ public class BrandController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+
     /**
-     * 根据分类查询品牌
+     * 更新品牌
+     *
+     * @param brandVo
+     * @return
+     */
+    @PutMapping
+    public ResponseEntity<Void> updateBrand(BrandVo brandVo) {
+        brandService.updateBrand(brandVo);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 删除品牌
+     *
+     * @param bid
+     * @return
+     */
+    @DeleteMapping("bid/{bid}")
+    public ResponseEntity<Void> deleteBrand(@PathVariable("bid") Long bid) {
+        brandService.deleteBrand(bid);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 根据分类ID查询品牌
      *
      * @param cid
      * @return
      */
     @GetMapping("cid/{cid}")
-    public ResponseEntity<List<Brand>> queryBrandByCategory(@PathVariable("cid") Long cid) {
+    public ResponseEntity<List<Brand>> queryBrandByCid(@PathVariable("cid") Long cid) {
         return ResponseEntity.ok(brandService.queryBrandByCid(cid));
     }
 
     /**
-     * 根据id查询品牌
+     * 根据商品品牌ID查询品牌
      *
      * @param id
      * @return
      */
     @GetMapping("{id}")
-    public ResponseEntity<Brand> queryBrandById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(brandService.queryById(id));
+    public ResponseEntity<Brand> queryById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(brandService.queryBrandByBid(id));
     }
 
     /**
-     * 根据id列表查询品牌列表
-     *
+     * 根据ids查询品牌
      * @param ids
      * @return
      */
     @GetMapping("list")
-    public ResponseEntity<List<Brand>> queryBrandByIds(@RequestParam("ids") List<Long> ids) {
+    public ResponseEntity<List<Brand>> queryBrandsByIds(@RequestParam("ids") List<Long> ids) {
         return ResponseEntity.ok(brandService.queryBrandByIds(ids));
     }
+
+
+
+
 
 }
