@@ -44,13 +44,13 @@ public class UploadService {
             String type = file.getContentType();
             if (!prop.getAllowTypes().contains(type)) {
                log.error("文件类型无效");
-                throw new FmException(ExceptionEnum.INVALID_FILE_TYPE);
+                throw new FmException(ExceptionEnum.INVALID_FILE_FORMAT);
             }
             // 2)校验文件内容
             BufferedImage image = ImageIO.read(file.getInputStream());
             if (image == null) {
                log.error("上传失败，文件内容不符合要求");
-                throw new FmException(ExceptionEnum.INVALID_FILE_TYPE);
+                throw new FmException(ExceptionEnum.INVALID_FILE_FORMAT);
             }
 
             // 2、本地保存图片

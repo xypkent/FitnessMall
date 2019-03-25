@@ -32,6 +32,7 @@ public interface BrandMapper extends Mapper<Brand>, IdListMapper<Brand, Long> {
     @Delete("delete from tb_category_brand where brand_id = #{bid}")
     int deleteCategoryBrandByBid(Long bid);
 
+    //一个参数其实不用加上@Param，不过这可以养成习惯
     @Select("select * from tb_brand where id in (select brand_id from tb_category_brand where category_id = #{cid})")
-    List<Brand> queryBrandByCid(Long cid);
+    List<Brand> queryBrandByCid(@Param("cid") Long cid);
 }

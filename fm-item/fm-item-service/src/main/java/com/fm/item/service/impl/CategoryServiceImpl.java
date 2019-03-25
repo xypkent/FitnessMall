@@ -33,8 +33,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> queryCategoryByIds(List<Long> ids) {
-        return categoryMapper.selectByIdList(ids);
-
+        List<Category> categoryList = categoryMapper.selectByIdList(ids);
+        if (CollectionUtils.isEmpty(categoryList)) {
+            throw new FmException(ExceptionEnum.CATEGORY_NOT_FOUND);
+        }
+        return categoryList;
     }
 
     @Override
