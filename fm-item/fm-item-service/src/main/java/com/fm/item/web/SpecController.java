@@ -1,8 +1,8 @@
 package com.fm.item.web;
 
 import com.fm.item.service.SpecService;
-import com.fn.item.pojo.SpecGroup;
-import com.fn.item.pojo.SpecParam;
+import com.fm.item.pojo.SpecGroup;
+import com.fm.item.pojo.SpecParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

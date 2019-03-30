@@ -2,9 +2,9 @@ package com.fm.item.web;
 
 import com.fm.common.vo.PageResult;
 import com.fm.item.service.GoodsService;
-import com.fn.item.pojo.Sku;
-import com.fn.item.pojo.Spu;
-import com.fn.item.pojo.SpuDetail;
+import com.fm.item.pojo.Sku;
+import com.fm.item.pojo.Spu;
+import com.fm.item.pojo.SpuDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -2,7 +2,7 @@ package com.fm.item.service;
 
 
 
-import com.fn.item.pojo.Category;
+import com.fm.item.pojo.Category;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package com.fm.item.mapper;
 
 
 import com.fm.common.mapper.BaseMapper;
-import com.fn.item.pojo.Stock;
+import com.fm.item.pojo.Stock;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
 

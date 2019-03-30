@@ -4,7 +4,7 @@ import com.fm.common.enums.ExceptionEnum;
 import com.fm.common.exception.FmException;
 import com.fm.item.mapper.CategoryMapper;
 import com.fm.item.service.CategoryService;
-import com.fn.item.pojo.Category;
+import com.fm.item.pojo.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;

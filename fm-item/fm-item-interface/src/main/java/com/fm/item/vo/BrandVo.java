@@ -1,4 +1,4 @@
-package com.fn.item.vo;
+package com.fm.item.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

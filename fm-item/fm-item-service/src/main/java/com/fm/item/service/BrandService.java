@@ -3,9 +3,9 @@ package com.fm.item.service;
 
 
 import com.fm.common.vo.PageResult;
-import com.fn.item.pojo.Brand;
-import com.fn.item.pojo.Category;
-import com.fn.item.vo.BrandVo;
+import com.fm.item.pojo.Brand;
+import com.fm.item.pojo.Category;
+import com.fm.item.vo.BrandVo;
 
 import java.util.List;
 

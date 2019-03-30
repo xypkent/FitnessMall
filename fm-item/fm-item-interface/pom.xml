@@ -23,6 +23,15 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.9.7</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fm.common</groupId>
+            <artifactId>fm-common</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>

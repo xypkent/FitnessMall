@@ -205,6 +205,9 @@
     <orderEntry type="library" name="Maven: tk.mybatis:mapper-core:1.0.4" level="project" />
     <orderEntry type="library" name="Maven: javax.persistence:persistence-api:1.0" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.9.6" level="project" />
+    <orderEntry type="module" module-name="fm-common" />
+    <orderEntry type="library" name="Maven: tk.mybatis:mapper-extra:1.0.4" level="project" />
+    <orderEntry type="library" name="Maven: tk.mybatis:mapper-base:1.0.4" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-amqp:2.0.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-messaging:5.0.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.amqp:spring-rabbit:2.0.5.RELEASE" level="project" />

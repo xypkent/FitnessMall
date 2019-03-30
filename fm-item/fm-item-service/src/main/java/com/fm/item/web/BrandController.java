@@ -2,8 +2,8 @@ package com.fm.item.web;
 
 import com.fm.common.vo.PageResult;
 import com.fm.item.service.BrandService;
-import com.fn.item.pojo.Brand;
-import com.fn.item.vo.BrandVo;
+import com.fm.item.pojo.Brand;
+import com.fm.item.vo.BrandVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

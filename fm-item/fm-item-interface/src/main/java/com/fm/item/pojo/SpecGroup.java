@@ -1,4 +1,4 @@
-package com.fn.item.pojo;
+package com.fm.item.pojo;
 
 import lombok.Data;
 import tk.mybatis.mapper.annotation.KeySql;

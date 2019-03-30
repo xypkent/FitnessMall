@@ -1,4 +1,4 @@
-package com.fn.item.pojo;
+package com.fm.item.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;

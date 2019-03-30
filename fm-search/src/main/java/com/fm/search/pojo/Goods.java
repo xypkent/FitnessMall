@@ -29,7 +29,7 @@ public class Goods {
         private Long cid3;//3级分类id
 
         private Date createTime;
-        private Set<Long> price;  //是所有sku的价格集合。方便根据价格进行筛选过滤
+        private Set<Double> price;  //是所有sku的价格集合。方便根据价格进行筛选过滤
 
         @Field(type = FieldType.Keyword, index = false)
         private String skus;  //sku信息的json结构数据

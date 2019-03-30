@@ -1,7 +1,7 @@
 package com.fm.item.mapper;
 
-import com.fn.item.pojo.Brand;
-import com.fn.item.pojo.Category;
+import com.fm.item.pojo.Brand;
+import com.fm.item.pojo.Category;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;

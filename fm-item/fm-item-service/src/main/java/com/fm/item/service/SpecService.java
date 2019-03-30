@@ -1,7 +1,7 @@
 package com.fm.item.service;
 
-import com.fn.item.pojo.SpecGroup;
-import com.fn.item.pojo.SpecParam;
+import com.fm.item.pojo.SpecGroup;
+import com.fm.item.pojo.SpecParam;
 
 import java.util.List;
 
