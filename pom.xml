@@ -13,6 +13,7 @@
         <module>fm-item</module>
         <module>fm-common</module>
         <module>fm-upload</module>
+        <module>fm-search</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -12,6 +12,7 @@
         <module name="fm-item-interface" />
         <module name="fm-item-service" />
         <module name="fm-registry" />
+        <module name="fm-search" />
         <module name="fm-upload" />
       </profile>
     </annotationProcessing>
@@ -23,6 +24,7 @@
       <module name="fm-item-interface" target="1.8" />
       <module name="fm-item-service" target="1.8" />
       <module name="fm-registry" target="1.8" />
+      <module name="fm-search" target="1.8" />
       <module name="fm-upload" target="1.8" />
     </bytecodeTargetLevel>
   </component>
