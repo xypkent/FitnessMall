@@ -10,25 +10,31 @@ import com.fm.search.client.CategoryClient;
 import com.fm.search.client.GoodsClient;
 import com.fm.search.client.SpecClient;
 import com.fm.search.pojo.Goods;
+import com.fm.search.pojo.SearchRequest;
+import com.fm.search.pojo.SearchResult;
 import com.fm.search.repository.GoodsRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
+import org.springframework.data.elasticsearch.core.query.FetchSourceFilter;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -186,55 +192,57 @@ public class SearchService {
         return result;
     }
 
-//    public SearchResult<Goods> search(SearchRequest searchRequest) {
-//
-//        String key = searchRequest.getKey();
-//        if (StringUtils.isBlank(key)) {
-//            throw new FmException(ExceptionEnum.INVALID_PARAM);
-//        }
-//        NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
-//
-//        //通过sourceFilter字段过滤只要我们需要的数据
-//        queryBuilder.withSourceFilter(new FetchSourceFilter(new String[]{"id", "subtitle", "skus"}, null));
-//
-//        //分页和排序
-//        searchWithPageAndSort(queryBuilder, searchRequest);
-//
-//        //基本搜索条件
-//        QueryBuilder basicQuery = buildBasicQuery(searchRequest);
-//        queryBuilder.withQuery(basicQuery);
-//
-//        //对分类和品牌聚合
-//        String categoryAggName = "categoryAgg";
-//        queryBuilder.addAggregation(AggregationBuilders.terms(categoryAggName).field("cid3"));
-//
-//        String brandAggName = "brandAgg";
-//        queryBuilder.addAggregation(AggregationBuilders.terms(brandAggName).field("brandId"));
-//
-//        //查询，获取结果
-//        AggregatedPage<Goods> result = template.queryForPage(queryBuilder.build(), Goods.class);
-//
-//        //解析聚合结果
-//        Aggregations aggs = result.getAggregations();
-//        //解析分类聚合
-//        List<Category> categories = handleCategoryAgg(aggs.get(categoryAggName));
-//        //解析品牌聚合
-//        List<Brand> brands = handleBrandAgg(aggs.get(brandAggName));
-//
-//        //对规格参数聚合
-//        List<Map<String, Object>> specs = null;
-//
-//        if (categories != null && categories.size() == 1) {
-//            specs = handleSpecs(categories.get(0).getId(), basicQuery);
-//        }
-//
-//        //解析分页结果
-//        long total = result.getTotalElements();
-//        int totalPage = result.getTotalPages();
-//        List<Goods> items = result.getContent();
-//
-//        return new SearchResult(total, totalPage, items, categories, brands, specs);
-//    }
+    public SearchResult<Goods> search(SearchRequest searchRequest) {
+
+        String key = searchRequest.getKey();
+        if (StringUtils.isBlank(key)) {
+            throw new FmException(ExceptionEnum.INVALID_PARAM);
+        }
+
+        //NativeSearchQueryBuilder：Spring提供的一个查询条件构建器，帮助构建json格式的请求体
+        NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
+
+        //通过sourceFilter字段过滤只要我们需要的数据
+        queryBuilder.withSourceFilter(new FetchSourceFilter(new String[]{"id", "subtitle", "skus"}, null));
+
+        //分页和排序
+        searchWithPageAndSort(queryBuilder, searchRequest);
+
+        //基本搜索条件
+        QueryBuilder basicQuery = buildBasicQuery(searchRequest);
+        queryBuilder.withQuery(basicQuery);
+
+        //对分类和品牌聚合
+        String categoryAggName = "categoryAgg";
+        queryBuilder.addAggregation(AggregationBuilders.terms(categoryAggName).field("cid3"));
+
+        String brandAggName = "brandAgg";
+        queryBuilder.addAggregation(AggregationBuilders.terms(brandAggName).field("brandId"));
+
+        //查询，获取结果
+        AggregatedPage<Goods> result = template.queryForPage(queryBuilder.build(), Goods.class);
+
+        //解析聚合结果
+        Aggregations aggs = result.getAggregations();
+        //解析分类聚合
+        List<Category> categories = handleCategoryAgg(aggs.get(categoryAggName));
+        //解析品牌聚合
+        List<Brand> brands = handleBrandAgg(aggs.get(brandAggName));
+
+        //对规格参数聚合
+        List<Map<String, Object>> specs = null;
+
+        if (categories != null && categories.size() == 1) {
+            specs = handleSpecs(categories.get(0).getId(), basicQuery);
+        }
+
+        //解析分页结果
+        long total = result.getTotalElements();
+        int totalPage = result.getTotalPages();
+        List<Goods> items = result.getContent();
+
+        return new SearchResult(total, totalPage, items, categories, brands, specs);
+    }
 
     /**
      * 对规格参数进行聚合并解析结果
@@ -285,22 +293,21 @@ public class SearchService {
      * @param queryBuilder
      * @param searchRequest
      */
-//    private void searchWithPageAndSort(NativeSearchQueryBuilder queryBuilder, SearchRequest searchRequest) {
-//        Integer page = searchRequest.getPage() - 1;
-//        Integer size = searchRequest.getSize();
-//
-//        String sortBy = searchRequest.getSortBy();
-//        Boolean desc = searchRequest.getDescending();
-//
-//        //分页
-//        queryBuilder.withPageable(PageRequest.of(page, size));
-//
-//        //排序
-//        if (StringUtils.isNotBlank(sortBy)) {
-//            queryBuilder.withSort(SortBuilders.fieldSort(sortBy).order(desc ? SortOrder.DESC : SortOrder.ASC));
-//
-//        }
-//    }
+    private void searchWithPageAndSort(NativeSearchQueryBuilder queryBuilder, SearchRequest searchRequest) {
+        Integer page = searchRequest.getPage() - 1;//es页码从0开始
+        Integer size = searchRequest.getSize();
+
+        String sortBy = searchRequest.getSortBy();
+        Boolean desc = searchRequest.getDescending();
+
+        //分页
+        queryBuilder.withPageable(PageRequest.of(page, size));
+
+        //排序
+        if (StringUtils.isNotBlank(sortBy)) {
+            queryBuilder.withSort(SortBuilders.fieldSort(sortBy).order(desc ? SortOrder.DESC : SortOrder.ASC));
+        }
+    }
 
     /**
      * 解析品牌聚合结果
@@ -358,30 +365,30 @@ public class SearchService {
      * @param request
      * @return
      */
-//    private QueryBuilder buildBasicQuery(SearchRequest request) {
-//        //构建布尔查询
-//        BoolQueryBuilder basicQuery = QueryBuilders.boolQuery();
-//        //搜索条件
-//        basicQuery.must(QueryBuilders.matchQuery("all", request.getKey()));
-//
-//        //过滤条件
-//        Map<String, String> filterMap = request.getFilter();
-//
-//        if (!CollectionUtils.isEmpty(filterMap)) {
-//            for (Map.Entry<String, String> entry : filterMap.entrySet()) {
-//                String key = entry.getKey();
-//                //判断key是否是分类或者品牌过滤条件
-//                if (!"cid2".equals(key) && !"brandId".equals(key)) {
-//                    key = "specs." + key + ".keyword";
-//                }
-//                //过滤条件
-//                String value = entry.getValue();
-//                //因为是keyword类型，使用terms查询
-//                basicQuery.filter(QueryBuilders.termQuery(key, value));
-//            }
-//        }
-//        return basicQuery;
-//    }
+    private QueryBuilder buildBasicQuery(SearchRequest request) {
+        //构建布尔查询
+        BoolQueryBuilder basicQuery = QueryBuilders.boolQuery();
+        //搜索条件
+        basicQuery.must(QueryBuilders.matchQuery("all", request.getKey()));
+
+        //过滤条件
+        Map<String, String> filterMap = request.getFilter();
+
+        if (!CollectionUtils.isEmpty(filterMap)) {
+            for (Map.Entry<String, String> entry : filterMap.entrySet()) {
+                String key = entry.getKey();
+                //判断key是否是分类或者品牌过滤条件
+                if (!"cid2".equals(key) && !"brandId".equals(key)) {
+                    key = "specs." + key + ".keyword";
+                }
+                //过滤条件
+                String value = entry.getValue();
+                //因为是keyword类型，使用terms查询
+                basicQuery.filter(QueryBuilders.termQuery(key, value));
+            }
+        }
+        return basicQuery;
+    }
 
     /**
      * 插入或更新索引
