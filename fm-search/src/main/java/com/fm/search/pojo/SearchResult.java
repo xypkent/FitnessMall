@@ -13,7 +13,7 @@ public class SearchResult<Goods> extends PageResult<Goods> {
 
     private List<Brand> brands;
     private List<Category> categories;
-    //规格参数过滤条件
+    //规格参数 key及待选项 过滤条件
     private List<Map<String, Object>> specs;
 
     //可以优化成使用工厂模式构建对象

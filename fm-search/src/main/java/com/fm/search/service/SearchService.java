@@ -232,6 +232,7 @@ public class SearchService {
         //对规格参数聚合
         List<Map<String, Object>> specs = null;
 
+        //商品分类存在并数量为1，可以聚合规格参数
         if (categories != null && categories.size() == 1) {
             specs = handleSpecs(categories.get(0).getId(), basicQuery);
         }
@@ -247,15 +248,15 @@ public class SearchService {
     /**
      * 对规格参数进行聚合并解析结果
      *
-     * @param id
+     * @param cid
      * @param basicQuery
      * @return
      */
-    private List<Map<String, Object>> handleSpecs(Long id, QueryBuilder basicQuery) {
+    private List<Map<String, Object>> handleSpecs(Long cid, QueryBuilder basicQuery) {
         List<Map<String, Object>> specs = new ArrayList<>();
 
-        //查询可过滤的规格参数
-        List<SpecParam> params = specClient.querySpecParams(null, id, true, null);
+        //查询需要聚合的规格参数
+        List<SpecParam> params = specClient.querySpecParams(null, cid, true, null);
 
         //基本查询条件
         NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
@@ -378,7 +379,8 @@ public class SearchService {
             for (Map.Entry<String, String> entry : filterMap.entrySet()) {
                 String key = entry.getKey();
                 //判断key是否是分类或者品牌过滤条件
-                if (!"cid2".equals(key) && !"brandId".equals(key)) {
+//                if (!"cid2".equals(key) && !"brandId".equals(key)) {
+                if (!"cid3".equals(key) && !"brandId".equals(key)) {
                     key = "specs." + key + ".keyword";
                 }
                 //过滤条件
