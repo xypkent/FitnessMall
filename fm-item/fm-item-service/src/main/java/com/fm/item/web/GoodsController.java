@@ -111,15 +111,15 @@ public class GoodsController {
         return ResponseEntity.ok().build();
     }
 
-//    /**
-//     * 根据spuId查询spu及skus
-//     * @param spuId
-//     * @return
-//     */
-//    @GetMapping("spu/{id}")
-//    public ResponseEntity<Spu> querySpuBySpuId(@PathVariable("id") Long spuId) {
-//        return ResponseEntity.ok(goodsService.querySpuBySpuId(spuId));
-//    }
+    /**
+     * 根据spuId查询spu及skus
+     * @param spuId
+     * @return
+     */
+    @GetMapping("spu/{id}")
+    public ResponseEntity<Spu> querySpuBySpuId(@PathVariable("id") Long spuId) {
+        return ResponseEntity.ok(goodsService.querySpuBySpuId(spuId));
+    }
 //
 //    /**
 //     * 减库存

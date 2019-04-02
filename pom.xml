@@ -14,6 +14,8 @@
         <module>fm-common</module>
         <module>fm-upload</module>
         <module>fm-search</module>
+        <module>fm-page</module>
+        <module>fm-page2</module>
     </modules>
     <packaging>pom</packaging>
 

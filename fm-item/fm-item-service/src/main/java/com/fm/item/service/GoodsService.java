@@ -24,7 +24,7 @@ public interface GoodsService {
 
     void handleSaleable(Spu spu);
 
-//    Spu querySpuBySpuId(Long spuId);
+    Spu querySpuBySpuId(Long spuId);
 
 //    List<Sku> querySkusByIds(List<Long> ids);
 

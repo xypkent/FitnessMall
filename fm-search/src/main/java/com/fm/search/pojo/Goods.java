@@ -21,7 +21,7 @@ public class Goods {
         private String all;  //所有需要被搜索的信息，包括品牌，分类，标题
 
         @Field(type = FieldType.Keyword, index = false)
-        private String subtitle;  //卖点
+        private String subTitle;  //卖点
 
         private Long brandId;
         private Long cid1;//1级分类id

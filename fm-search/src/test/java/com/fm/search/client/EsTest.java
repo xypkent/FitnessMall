@@ -38,6 +38,9 @@ public class EsTest {
         template.putMapping(Goods.class);
     }
 
+    /**
+     * 把数据库数据加载到索引库
+     */
     @Test
     public void loadData() {
         int page = 1;

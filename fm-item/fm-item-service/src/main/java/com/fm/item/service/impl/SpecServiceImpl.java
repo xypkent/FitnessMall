@@ -112,10 +112,12 @@ public class SpecServiceImpl implements SpecService {
 
     @Override
     public List<SpecGroup> querySpecsByCid(Long cid) {
+        //查询规格组
         List<SpecGroup> specGroups = querySpecGroupByCid(cid);
 
+        //查询当前分类下的参数
         List<SpecParam> specParams = querySpecParams(null, cid, null, null);
-
+        //先把规格参数变为map，key是组id，map的值是组下所有参数
         Map<Long, List<SpecParam>> map = new HashMap<>();
         //遍历specParams
         for (SpecParam param : specParams) {
@@ -127,7 +129,7 @@ public class SpecServiceImpl implements SpecService {
             //添加进map中
             map.get(param.getGroupId()).add(param);
         }
-
+        //填充param到group
         for (SpecGroup specGroup : specGroups) {
             specGroup.setParams(map.get(specGroup.getId()));
         }

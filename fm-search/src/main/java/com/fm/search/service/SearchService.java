@@ -154,7 +154,7 @@ public class SearchService {
         goods.setPrice(priceSet);//sku价格集合
         goods.setSkus(JsonUtils.toString(skus));//所有sku的集合的json格式
         goods.setSpecs(specs);//所有可搜索的规格参数
-        goods.setSubtitle(spu.getSubTitle());
+        goods.setSubTitle(spu.getSubTitle());
         return goods;
     }
 
@@ -195,6 +195,9 @@ public class SearchService {
     public SearchResult<Goods> search(SearchRequest searchRequest) {
 
         String key = searchRequest.getKey();
+        /**
+         * 判断是否有搜索条件，如果没有，直接返回null。不允许搜索全部商品
+         */
         if (StringUtils.isBlank(key)) {
             throw new FmException(ExceptionEnum.INVALID_PARAM);
         }
@@ -203,7 +206,7 @@ public class SearchService {
         NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
 
         //通过sourceFilter字段过滤只要我们需要的数据
-        queryBuilder.withSourceFilter(new FetchSourceFilter(new String[]{"id", "subtitle", "skus"}, null));
+        queryBuilder.withSourceFilter(new FetchSourceFilter(new String[]{"id", "subTitle", "skus"}, null));
 
         //分页和排序
         searchWithPageAndSort(queryBuilder, searchRequest);

@@ -11,6 +11,8 @@ import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -221,23 +223,25 @@ public class GoodsServiceImpl implements GoodsService {
         }
     }
 
-//    @Override
-//    public Spu querySpuBySpuId(Long spuId) {
-//        //根据spuId查询spu
-//        Spu spu = spuMapper.selectByPrimaryKey(spuId);
-//
-//        //查询spuDetail
-//        SpuDetail detail = querySpuDetailBySpuId(spuId);
-//
-//        //查询skus
-//        List<Sku> skus = querySkuBySpuId(spuId);
-//
-//        spu.setSpuDetail(detail);
-//        spu.setSkus(skus);
-//
-//        return spu;
-//
-//    }
+    @Override
+    public Spu querySpuBySpuId(Long spuId) {
+        //根据spuId查询spu
+        Spu spu = spuMapper.selectByPrimaryKey(spuId);
+        if(spu == null){
+            throw new FmException(ExceptionEnum.GOODS_NOT_FOUND);
+        }
+        //查询spuDetail
+        SpuDetail detail = querySpuDetailBySpuId(spuId);
+
+        //查询skus
+        List<Sku> skus = querySkuBySpuId(spuId);
+
+        spu.setSpuDetail(detail);
+        spu.setSkus(skus);
+
+        return spu;
+
+    }
 
 //    @Override
 //    public List<Sku> querySkusByIds(List<Long> ids) {
