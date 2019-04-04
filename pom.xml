@@ -16,6 +16,7 @@
         <module>fm-search</module>
         <module>fm-page</module>
         <module>fm-page2</module>
+        <module>fm-sms</module>
     </modules>
     <packaging>pom</packaging>
 

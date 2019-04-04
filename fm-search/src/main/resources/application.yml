@@ -10,10 +10,10 @@ spring:
   jackson:
     default-property-inclusion: non_null
   rabbitmq:
-    virtual-host: /fm
+    host: 192.168.25.133
     username: fm
     password: fm
-    host: 192.168.82.100
+    virtual-host: /fm
 eureka:
   client:
     service-url:

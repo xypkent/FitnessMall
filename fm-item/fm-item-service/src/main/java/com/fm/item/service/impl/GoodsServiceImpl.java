@@ -10,6 +10,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,9 +43,9 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Autowired
     private StockMapper stockMapper;
-//
-//    @Autowired
-//    private AmqpTemplate amqpTemplate;
+
+    @Autowired
+    private AmqpTemplate amqpTemplate;
 
     @Override
     public PageResult<Spu> querySpuByPage(Integer page, Integer rows, String key, Boolean saleable) {
@@ -136,7 +137,7 @@ public class GoodsServiceImpl implements GoodsService {
         }
 
         //发送消息
-//        sendMessage(spuId, "delete");
+        sendMessage(spuId, "delete");
     }
 
     @Transactional
@@ -164,7 +165,7 @@ public class GoodsServiceImpl implements GoodsService {
         saveSkuAndStock(spu);
 
         //发送消息
-//        sendMessage(spu.getId(), "insert");
+        sendMessage(spu.getId(), "insert");
 
     }
 
@@ -211,7 +212,7 @@ public class GoodsServiceImpl implements GoodsService {
         saveSkuAndStock(spu);
 
         //发送消息
-//        sendMessage(spu.getId(), "update");
+        sendMessage(spu.getId(), "update");
     }
 
     @Override
@@ -332,17 +333,17 @@ public class GoodsServiceImpl implements GoodsService {
         }
     }
 
-//    /**
-//     * 封装发送到消息队列的方法
-//     *
-//     * @param id
-//     * @param type
-//     */
-//    private void sendMessage(Long id, String type) {
-//        try {
-////            amqpTemplate.convertAndSend("item." + type, id);
-//        } catch (Exception e) {
-//            log.error("{}商品消息发送异常，商品ID：{}", type, id, e);
-//        }
-//    }
+    /**
+     * 封装发送到消息队列的方法
+     *
+     * @param id
+     * @param type
+     */
+    private void sendMessage(Long id, String type) {
+        try {
+            amqpTemplate.convertAndSend("item." + type, id);
+        } catch (Exception e) {
+            log.error("{}商品消息发送异常，商品ID：{}", type, id, e);
+        }
+    }
 }

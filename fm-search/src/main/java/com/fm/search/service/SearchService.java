@@ -35,6 +35,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -398,15 +399,24 @@ public class SearchService {
     /**
      * 插入或更新索引
      *
-     * @param id
+     * @param spuId
      */
     @Transactional
-//    public void insertOrUpdate(Long id) {
-//        Spu spu = goodsClient.querySpuBySpuId(id);
-//        if (spu == null) {
-//            log.error("索引对应的spu不存在，spuId:{}", id);
-//            throw new RuntimeException();
-//        }
+    public void insertOrUpdate(Long spuId) {
+
+        //查询spu
+        Spu spu = goodsClient.querySpuBySpuId(spuId);
+        if (spu == null) {
+            log.error("索引对应的spu不存在，spuId:{}", spuId);
+            throw new RuntimeException();
+        }
+
+        //构建商品
+        Goods goods = this.buildGoods(spu);
+        //不处理异常，失败就回滚重试
+        //保存到索引库
+        repository.save(goods);
+
 //        try {
 //            Goods goods = buildGoods(spu);
 //            //保存到索引库
@@ -415,8 +425,8 @@ public class SearchService {
 //            log.error("构建商品失败", e);
 //            throw new RuntimeException();
 //        }
-//
-//    }
+
+    }
 
     /**
      * 删除索引

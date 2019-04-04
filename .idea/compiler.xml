@@ -14,6 +14,7 @@
         <module name="fm-page" />
         <module name="fm-registry" />
         <module name="fm-search" />
+        <module name="fm-sms" />
         <module name="fm-upload" />
       </profile>
     </annotationProcessing>
@@ -28,6 +29,7 @@
       <module name="fm-page2" target="1.8" />
       <module name="fm-registry" target="1.8" />
       <module name="fm-search" target="1.8" />
+      <module name="fm-sms" target="1.8" />
       <module name="fm-upload" target="1.8" />
     </bytecodeTargetLevel>
   </component>

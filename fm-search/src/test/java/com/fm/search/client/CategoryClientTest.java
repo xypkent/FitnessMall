@@ -15,19 +15,17 @@ import java.util.List;
 @SpringBootTest
 public class CategoryClientTest {
 
-    @Autowired
-    private CategoryClient categoryClient;
-
-    @Test
-    public void queryCategoryByIds() {
-
-        List<Category> categories = categoryClient.queryByIds(Arrays.asList(1L, 2L, 3L));
-
-        Assert.assertEquals(3L,categories.size());
-        for (Category category : categories) {
-            System.out.println("category = " + category);
-        }
-
-
-    }
+//    @Autowired
+//    private CategoryClient categoryClient;
+//
+//    @Test
+//    public void queryCategoryByIds() {
+//
+//        List<Category> categories = categoryClient.queryByIds(Arrays.asList(1L, 2L, 3L));
+//
+//        Assert.assertEquals(3L,categories.size());
+//        for (Category category : categories) {
+//            System.out.println("category = " + category);
+//        }
+//    }
 }

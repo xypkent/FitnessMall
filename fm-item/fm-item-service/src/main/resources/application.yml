@@ -7,6 +7,20 @@ spring:
     url: jdbc:mysql://localhost:3306/fitnessmall
     username: root
     password: 123456
+  rabbitmq:
+    host: 192.168.25.133
+    username: fm
+    password: fm
+    virtual-host: /fm
+    template:
+      retry:
+        enabled: true
+        initial-interval: 10000ms
+        max-interval: 30000ms
+        multiplier: 2
+      exchange: fm.item.exchange
+    publisher-confirms: true # 生产者重试
+
 eureka:
   client:
     service-url:

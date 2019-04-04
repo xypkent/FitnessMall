@@ -11,6 +11,7 @@
       <module fileurl="file://$PROJECT_DIR$/fm-page/fm-page.iml" filepath="$PROJECT_DIR$/fm-page/fm-page.iml" />
       <module fileurl="file://$PROJECT_DIR$/fm-registry/fm-registry.iml" filepath="$PROJECT_DIR$/fm-registry/fm-registry.iml" />
       <module fileurl="file://$PROJECT_DIR$/fm-search/fm-search.iml" filepath="$PROJECT_DIR$/fm-search/fm-search.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fm-sms/fm-sms.iml" filepath="$PROJECT_DIR$/fm-sms/fm-sms.iml" />
       <module fileurl="file://$PROJECT_DIR$/fm-upload/fm-upload.iml" filepath="$PROJECT_DIR$/fm-upload/fm-upload.iml" />
     </modules>
   </component>

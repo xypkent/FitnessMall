@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
 public class EsTest {
 
     @Autowired
@@ -53,17 +53,6 @@ public class EsTest {
 
             List<Goods> goodList = spuList.stream()
                     .map(searchService::buildGoods).collect(Collectors.toList());
-
-//            ArrayList<Goods> goodList = new ArrayList<>();
-//            for (Spu spu : spuList) {
-//                try {
-//                    Goods g = searchService.buildGoods(spu);
-//                    goodList.add(g);
-//
-//                } catch (Exception e) {
-//                    break;
-//                }
-//            }
 
             this.goodsRepository.saveAll(goodList);
             page++;//翻页
