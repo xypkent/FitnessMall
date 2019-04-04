@@ -41,7 +41,7 @@ public class SmsUtil {
     public SendSmsResponse sendSms(String signature, String templateCode, String phone, Map<String,Object> params) {
 
         try {
-
+            //限流处理
             String key = SMS_PREFIX + phone;
 
             String lastTime = template.opsForValue().get(key);
@@ -92,9 +92,13 @@ public class SmsUtil {
                 return null;
             }
 
+            //发送短信日志
+            log.info("[短信服务]，发送短信验证码，手机号：{}",phone);
+
             //存入Redis中，设置失效时间为1min
             template.opsForValue().set(key, String.valueOf(System.currentTimeMillis()), 1, TimeUnit.MINUTES);
             return resp;
+
         } catch (Exception e) {
             log.error("【短信服务】发送信息失败，手机号码：{}", phone,e);
             return null;

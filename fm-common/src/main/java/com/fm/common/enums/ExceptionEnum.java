@@ -38,8 +38,8 @@ public enum ExceptionEnum {
     INVALID_PARAM(400, "参数错误"),
     USERNAME_OR_PASSWORD_ERROR(400, "账号或密码错误"),
     VERIFY_CODE_NOT_MATCHING(400, "验证码错误"),
-    PASSWORD_NOT_MATCHING(400, "密码错误"),
-    USER_NOT_EXIST(404, "用户不存在"),
+//    PASSWORD_NOT_MATCHING(400, "密码错误"),
+//    USER_NOT_EXIST(404, "用户不存在"),
 
     SPEC_PARAM_NOT_FOUND(204, "规格参数查询失败"),
     UPDATE_SPEC_PARAM_FAILED(500, "商品规格参数更新失败"),

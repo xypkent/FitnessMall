@@ -15,8 +15,9 @@
         <module>fm-upload</module>
         <module>fm-search</module>
         <module>fm-page</module>
-        <module>fm-page2</module>
         <module>fm-sms</module>
+        <module>fm-user</module>
+        <module>fm-auth</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -40,7 +41,7 @@
         <druid.starter.version>1.1.9</druid.starter.version>
         <mysql.version>5.1.32</mysql.version>
         <pageHelper.starter.version>1.2.5</pageHelper.starter.version>
-        <FitnessMall.latest.version>1.0.0-SNAPSHOT</FitnessMall.latest.version>
+        <fm.latest.version>1.0.0-SNAPSHOT</fm.latest.version>
         <fastDFS.client.version>1.26.1-RELEASE</fastDFS.client.version>
     </properties>
 

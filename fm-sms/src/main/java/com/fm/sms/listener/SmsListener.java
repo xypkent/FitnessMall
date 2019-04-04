@@ -47,7 +47,6 @@ public class SmsListener {
         }
         smsUtil.sendSms(props.getSignName(), props.getVerifyCodeTemplate(), phone, msg);
 
-        //发送短信日志
-        log.info("[短信服务]，发送短信验证码，手机号：{}",phone);
+
     }
 }

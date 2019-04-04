@@ -7,6 +7,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="fm-auth" />
+        <module name="fm-auth-common" />
+        <module name="fm-auth-service" />
         <module name="fm-common" />
         <module name="fm-gateway" />
         <module name="fm-item-interface" />
@@ -16,10 +19,16 @@
         <module name="fm-search" />
         <module name="fm-sms" />
         <module name="fm-upload" />
+        <module name="fm-user-interface" />
+        <module name="fm-user-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="FitnessMall" target="1.8" />
+      <module name="fm-auth" target="1.8" />
+      <module name="fm-auth-center" target="1.8" />
+      <module name="fm-auth-common" target="1.8" />
+      <module name="fm-auth-service" target="1.8" />
       <module name="fm-common" target="1.8" />
       <module name="fm-gateway" target="1.8" />
       <module name="fm-item" target="1.8" />
@@ -31,6 +40,9 @@
       <module name="fm-search" target="1.8" />
       <module name="fm-sms" target="1.8" />
       <module name="fm-upload" target="1.8" />
+      <module name="fm-user" target="1.8" />
+      <module name="fm-user-interface" target="1.8" />
+      <module name="fm-user-service" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
