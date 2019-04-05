@@ -12,8 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -244,16 +242,16 @@ public class GoodsServiceImpl implements GoodsService {
 
     }
 
-//    @Override
-//    public List<Sku> querySkusByIds(List<Long> ids) {
-//        List<Sku> skus = skuMapper.selectByIdList(ids);
-//        if (CollectionUtils.isEmpty(skus)) {
-//            throw new FmException(ExceptionEnum.GOODS_NOT_FOUND);
-//        }
-//        //填充库存
-//        fillStock(ids, skus);
-//        return skus;
-//    }
+    @Override
+    public List<Sku> querySkusByIds(List<Long> ids) {
+        List<Sku> skus = skuMapper.selectByIdList(ids);
+        if (CollectionUtils.isEmpty(skus)) {
+            throw new FmException(ExceptionEnum.GOODS_NOT_FOUND);
+        }
+        //填充库存
+        fillStock(ids, skus);
+        return skus;
+    }
 
 //    @Transactional
 //    @Override
@@ -266,20 +264,20 @@ public class GoodsServiceImpl implements GoodsService {
 //        }
 //    }
 
-//    private void fillStock(List<Long> ids, List<Sku> skus) {
-//        //批量查询库存
-//        List<Stock> stocks = stockMapper.selectByIdList(ids);
-//        if (CollectionUtils.isEmpty(stocks)) {
-//            throw new FmException(ExceptionEnum.STOCK_NOT_FOUND);
-//        }
-//        //首先将库存转换为map，key为sku的ID
-//        Map<Long, Integer> map = stocks.stream().collect(Collectors.toMap(s -> s.getSkuId(), s -> s.getStock()));
-//
-//        //遍历skus，并填充库存
-//        for (Sku sku : skus) {
-//            sku.setStock(map.get(sku.getId()));
-//        }
-//    }
+    private void fillStock(List<Long> ids, List<Sku> skus) {
+        //批量查询库存
+        List<Stock> stocks = stockMapper.selectByIdList(ids);
+        if (CollectionUtils.isEmpty(stocks)) {
+            throw new FmException(ExceptionEnum.STOCK_NOT_FOUND);
+        }
+        //首先将库存转换为map，key为sku的ID
+        Map<Long, Integer> map = stocks.stream().collect(Collectors.toMap(s -> s.getSkuId(), s -> s.getStock()));
+
+        //遍历skus，并填充库存
+        for (Sku sku : skus) {
+            sku.setStock(map.get(sku.getId()));
+        }
+    }
 
 
     /**

@@ -17,7 +17,8 @@
         <module>fm-page</module>
         <module>fm-sms</module>
         <module>fm-user</module>
-        <module>fm-auth</module>
+        <module>fm-auth-center</module>
+        <module>fm-cart</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -10,6 +10,7 @@
         <module name="fm-auth" />
         <module name="fm-auth-common" />
         <module name="fm-auth-service" />
+        <module name="fm-cart" />
         <module name="fm-common" />
         <module name="fm-gateway" />
         <module name="fm-item-interface" />
@@ -29,6 +30,7 @@
       <module name="fm-auth-center" target="1.8" />
       <module name="fm-auth-common" target="1.8" />
       <module name="fm-auth-service" target="1.8" />
+      <module name="fm-cart" target="1.8" />
       <module name="fm-common" target="1.8" />
       <module name="fm-gateway" target="1.8" />
       <module name="fm-item" target="1.8" />

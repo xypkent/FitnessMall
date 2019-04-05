@@ -4,8 +4,6 @@ import com.fm.auth.entity.UserInfo;
 import com.fm.auth.properties.JwtProperties;
 import com.fm.auth.service.AuthService;
 import com.fm.auth.utils.JwtUtils;
-import com.fm.common.enums.ExceptionEnum;
-import com.fm.common.exception.FmException;
 import com.fm.common.utils.CookieUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,11 +44,13 @@ public class AuthController {
             HttpServletResponse response
     ) {
         String token = authService.login(username, password);
-        if (StringUtils.isBlank(token)) {
-            throw new FmException(ExceptionEnum.USERNAME_OR_PASSWORD_ERROR);
-        }
+
         //将Token写入cookie中
-        CookieUtils.newBuilder(response).httpOnly().maxAge(props.getCookieMaxAge()).request(request).build(props.getCookieName(), token);
+        //cookie不允许跨域
+        //设置request 为了得到domain(例如www.fm.com)防止其他网站的来访问
+        CookieUtils.newBuilder(response).httpOnly()
+                .maxAge(props.getCookieMaxAge()).request(request)
+                .build(props.getCookieName(), token);
         return ResponseEntity.ok().build();
     }
 
@@ -61,14 +61,20 @@ public class AuthController {
      * @return
      */
     @GetMapping("verify")
-    public ResponseEntity<UserInfo> verifyUser(@CookieValue("LY_TOKEN") String token, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<UserInfo> verifyUser(
+            @CookieValue("FM_TOKEN") String token,
+            HttpServletRequest request, HttpServletResponse response) {
         try {
             //从Token中获取用户信息
             UserInfo userInfo = JwtUtils.getUserInfo(props.getPublicKey(), token);
             //成功，刷新Token
             String newToken = JwtUtils.generateToken(userInfo, props.getPrivateKey(), props.getExpire());
-            //将新的Token写入cookie中，并设置httpOnly
-            CookieUtils.newBuilder(response).httpOnly().maxAge(props.getCookieMaxAge()).request(request).build(props.getCookieName(), newToken);
+            //将新的Token写入cookie中，并设置httpOnly(避免Js代码操作你的Cookies)
+            //cookie不允许跨域
+            //设置request 为了得到domain(例如www.fm.com)防止其他网站的来访问
+            CookieUtils.newBuilder(response).httpOnly()
+                    .maxAge(props.getCookieMaxAge()).request(request)
+                    .build(props.getCookieName(), newToken);
             return ResponseEntity.ok(userInfo);
         } catch (Exception e) {
             //Token无效
@@ -84,7 +90,7 @@ public class AuthController {
      * @return
      */
     @GetMapping("logout")
-    public ResponseEntity<Void> logout(@CookieValue("LY_TOKEN") String token, HttpServletResponse response) {
+    public ResponseEntity<Void> logout(@CookieValue("FM_TOKEN") String token, HttpServletResponse response) {
         if (StringUtils.isNotBlank(token)) {
             CookieUtils.newBuilder(response).maxAge(0).build(props.getCookieName(), token);
         }

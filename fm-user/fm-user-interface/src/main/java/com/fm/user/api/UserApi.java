@@ -1,4 +1,4 @@
-package api;
+package com.fm.user.api;
 
 import com.fm.user.pojo.User;
 import org.springframework.web.bind.annotation.GetMapping;

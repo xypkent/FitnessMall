@@ -26,7 +26,7 @@ public interface GoodsService {
 
     Spu querySpuBySpuId(Long spuId);
 
-//    List<Sku> querySkusByIds(List<Long> ids);
+    List<Sku> querySkusByIds(List<Long> ids);
 
 //    void decreaseStock(List<CartDto> cartDtos);
 }

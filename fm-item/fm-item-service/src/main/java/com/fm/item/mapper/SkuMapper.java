@@ -1,8 +1,8 @@
 package com.fm.item.mapper;
 
 
+import com.fm.common.mapper.BaseMapper;
 import com.fm.item.pojo.Sku;
-import tk.mybatis.mapper.common.Mapper;
 
-public interface SkuMapper extends Mapper<Sku> {
+public interface SkuMapper extends BaseMapper<Sku, Long> {
 }

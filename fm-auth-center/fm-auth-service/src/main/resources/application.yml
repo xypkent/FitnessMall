@@ -17,8 +17,8 @@ eureka:
 fm:
   jwt:
     secret: fm@Login(Auth}*^31)&fitnessmall%f3q2 # 登录校验的密钥
-    pubKeyPath: D:\FitnessMall\id_rsa.pub # 公钥地址
-    priKeyPath: D:\FitnessMall\id_rsa.pri # 私钥地址
+    pubKeyPath: D:\\FitnessMall\\id_rsa.pub # 公钥地址
+    priKeyPath: D:\\FitnessMall\\id_rsa.pri # 私钥地址
     expire: 30 # 过期时间,单位分钟
     cookieName: FM_TOKEN
     cookieMaxAge: 1800

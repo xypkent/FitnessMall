@@ -27,16 +27,18 @@ public class AuthService {
 
     public String login(String username, String password) {
         try {
+            //校验用户名和密码
             User user = userClient.queryUser(username, password);
             if (user == null) {
-                return null;
+                throw new FmException(ExceptionEnum.USERNAME_OR_PASSWORD_ERROR);
             }
+
             UserInfo userInfo = new UserInfo(user.getId(), user.getUsername());
             //生成Token
             String token = JwtUtils.generateToken(userInfo, props.getPrivateKey(), props.getExpire());
             return token;
         } catch (Exception e) {
-            log.error("【授权中心】用户名和密码错误，用户名：{}", username,e);
+            log.error("【授权中心】用户名或密码错误，用户名：{}", username,e);
             throw new FmException(ExceptionEnum.USERNAME_OR_PASSWORD_ERROR);
         }
     }

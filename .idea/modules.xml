@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/fm-auth-center/fm-auth-center.iml" filepath="$PROJECT_DIR$/fm-auth-center/fm-auth-center.iml" />
       <module fileurl="file://$PROJECT_DIR$/fm-auth-center/fm-auth-common/fm-auth-common.iml" filepath="$PROJECT_DIR$/fm-auth-center/fm-auth-common/fm-auth-common.iml" />
       <module fileurl="file://$PROJECT_DIR$/fm-auth-center/fm-auth-service/fm-auth-service.iml" filepath="$PROJECT_DIR$/fm-auth-center/fm-auth-service/fm-auth-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fm-cart/fm-cart.iml" filepath="$PROJECT_DIR$/fm-cart/fm-cart.iml" />
       <module fileurl="file://$PROJECT_DIR$/fm-common/fm-common.iml" filepath="$PROJECT_DIR$/fm-common/fm-common.iml" />
       <module fileurl="file://$PROJECT_DIR$/fm-gateway/fm-gateway.iml" filepath="$PROJECT_DIR$/fm-gateway/fm-gateway.iml" />
       <module fileurl="file://$PROJECT_DIR$/fm-item/fm-item.iml" filepath="$PROJECT_DIR$/fm-item/fm-item.iml" />
