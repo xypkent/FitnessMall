@@ -19,7 +19,7 @@ public class JwtUtils {
     public static String generateToken(UserInfo userInfo, PrivateKey privateKey, int expireMinutes) {
         return Jwts.builder()
                 .claim(JwtConstants.JWT_KEY_ID, userInfo.getId())
-                .claim(JwtConstants.JWT_KEY_USER_NAME, userInfo.getName())
+                .claim(JwtConstants.JWT_KEY_USER_NAME, userInfo.getUsername())
                 .setExpiration(DateTime.now().plusMinutes(expireMinutes).toDate())
                 .signWith(SignatureAlgorithm.RS256, privateKey)
                 .compact();
@@ -37,7 +37,7 @@ public class JwtUtils {
     public static String generateToken(UserInfo userInfo, byte[] privateKey, int expireMinutes) throws Exception {
         return Jwts.builder()
                 .claim(JwtConstants.JWT_KEY_ID, userInfo.getId())
-                .claim(JwtConstants.JWT_KEY_USER_NAME, userInfo.getName())
+                .claim(JwtConstants.JWT_KEY_USER_NAME, userInfo.getUsername())
                 .setExpiration(DateTime.now().plus(expireMinutes).toDate())
                 .signWith(SignatureAlgorithm.ES256, RsaUtils.getPrivateKey(privateKey))
                 .compact();

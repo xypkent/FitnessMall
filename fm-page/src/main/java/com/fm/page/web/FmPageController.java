@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.Map;
 
 @Controller
-public class LyPageController {
+public class FmPageController {
 
     @Autowired
     private PageService pageService;
@@ -20,7 +20,5 @@ public class LyPageController {
         Map<String, Object> attributes = pageService.loadModel(spuId);
         model.addAllAttributes(attributes);
         return "item";
-
     }
-
 }

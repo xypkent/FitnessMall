@@ -3,14 +3,14 @@ package com.fm.cart.service;
 import com.fm.auth.entity.UserInfo;
 import com.fm.cart.filter.LoginInterceptor;
 import com.fm.cart.pojo.Cart;
+import com.fm.common.enums.ExceptionEnum;
+import com.fm.common.exception.FmException;
 import com.fm.common.utils.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,112 +19,94 @@ import java.util.stream.Collectors;
 @Slf4j
 public class CartService {
 
-    private static final String KEY_PREFIX = "ly:cart:uid:";
+    private static final String KEY_PREFIX = "fm:cart:uid:";
+
+    private static final Integer NUM_LIMIT = 99;
+
     @Autowired
     private StringRedisTemplate redisTemplate;
 
     /**
-     * 添加购物车到Redis中
-     *
+     * 添加到购物车
      * @param cart
      */
     public void addCart(Cart cart) {
-        //获取用户信息
-        UserInfo loginUser = LoginInterceptor.getLoginUser();
-
-        String key = KEY_PREFIX + loginUser.getId();
-
-        //获取商品ID
-        String hashKey = cart.getSkuId().toString();
-
-        //获取数量
         Integer num = cart.getNum();
-
-        //获取hash操作的对象
+        //获取用户
+        UserInfo userInfo = LoginInterceptor.getLoginUser();
+        String key = KEY_PREFIX + userInfo.getId();
+        //hash操作对象
         BoundHashOperations<String, Object, Object> hashOps = redisTemplate.boundHashOps(key);
-
-        if (hashOps.hasKey(hashKey)) {
-            //Redis中有该商品，修改数量
-            cart = JsonUtils.toBean(hashOps.get(hashKey).toString(), Cart.class);
+        //购物车限量99条
+        List<Object> carts = redisTemplate.boundHashOps(key).values();
+        if (carts.size() == NUM_LIMIT){
+            throw new FmException(ExceptionEnum.CART_IS_FULL);
+        }
+        //判断当前商品在购物车中是否存在
+        String hashKey = cart.getSkuId().toString();
+        if (hashOps.hasKey(hashKey)){
+            //存在，查询修改数量
+            String json = hashOps.get(hashKey).toString();
+            //反序列化
+            cart = JsonUtils.toBean(json, Cart.class);
+            //修改数量
             cart.setNum(num + cart.getNum());
-
         }
-
-        //存入Redis中
-        hashOps.put(hashKey, JsonUtils.toString(cart));
-
-
+        //如果不存在，直接写入
+        hashOps.put(hashKey,JsonUtils.toString(cart));
     }
 
-    public List<Cart> listCart() {
-
+    /**
+     * 查询当前用户的购物车列表
+     * @return
+     */
+    public List<Cart> queryCartList() {
         //获取登录用户
-        UserInfo loginUser = LoginInterceptor.getLoginUser();
-
-        //获取该用户Redis中的key
-        String key = KEY_PREFIX + loginUser.getId();
-
+        UserInfo userInfo = LoginInterceptor.getLoginUser();
+        //判断是否存在购物车
+        String key = KEY_PREFIX + userInfo.getId();
+        //不存在
         if (!redisTemplate.hasKey(key)) {
-            //Redis中没有给用户信息
-            return null;
+            throw new FmException(ExceptionEnum.CART_NOT_FOUND);
         }
-        BoundHashOperations<String, Object, Object> hashOps = redisTemplate.boundHashOps(key);
-
-        List<Object> carts = hashOps.values();
-
-        if (CollectionUtils.isEmpty(carts)) {
-            //购物车中无数据
-            return null;
-        }
-
-        return carts.stream().map(s -> JsonUtils.toBean(s.toString(), Cart.class)).collect(Collectors.toList());
+        //查询购物车
+        return redisTemplate.boundHashOps(key).values().stream()
+                .map(o -> JsonUtils.toBean(o.toString(),Cart.class)).collect(Collectors.toList());
     }
 
-    public void updateNum(Long id, Integer num) {
-        //获取登录的用户
-        UserInfo loginUser = LoginInterceptor.getLoginUser();
-        String key = KEY_PREFIX + loginUser.getId();
-
+    /**
+     * 修改购物车商品数量
+     * @param skuId
+     * @param num
+     */
+    public void updateNum(Long skuId, Integer num) {
+        //获取登录用户
+        UserInfo userInfo = LoginInterceptor.getLoginUser();
+        //判断是否存在购物车
+        String key = KEY_PREFIX + userInfo.getId();
+        //hash操作对象
         BoundHashOperations<String, Object, Object> hashOps = redisTemplate.boundHashOps(key);
-
-        if (!hashOps.hasKey(id.toString())) {
-            //该商品不存在
-            throw new RuntimeException("购物车商品不存在, 用户：" + loginUser.getId() + ", 商品：" + id);
+        //判断是否存在
+        if (!hashOps.hasKey(skuId.toString())){
+            //不存在
+            throw new FmException(ExceptionEnum.CART_NOT_FOUND);
         }
-        //查询购物车商品
-        Cart cart = JsonUtils.toBean(hashOps.get(id.toString()).toString(), Cart.class);
-
-        //修改数量
+        //存在，查询出来修改
+        String json = hashOps.get(skuId.toString()).toString();
+        Cart cart = JsonUtils.toBean(json, Cart.class);
         cart.setNum(num);
-
-        //写回Redis
-        hashOps.put(id.toString(), JsonUtils.toString(cart));
+        //写到redis
+        hashOps.put(skuId.toString(),JsonUtils.toString(cart));
     }
 
-    public void deleteCart(Long id) {
-        //获取登录的用户
-        UserInfo loginUser = LoginInterceptor.getLoginUser();
-        String key = KEY_PREFIX + loginUser.getId();
-
-        BoundHashOperations<String, Object, Object> hashOps = redisTemplate.boundHashOps(key);
-
-        if (!hashOps.hasKey(id.toString())) {
-            //该商品不存在
-            throw new RuntimeException("购物车商品不存在, 用户：" + loginUser.getId() + ", 商品：" + id);
-        }
-
-        //删除商品
-        hashOps.delete(id.toString());
-    }
-
-    @Transactional
-    public void deleteCarts(List<Object> ids, Integer userId) {
-        String key = KEY_PREFIX + userId;
-        BoundHashOperations<String, Object, Object> hashOps = redisTemplate.boundHashOps(key);
-
-
-        for (Object id : ids) {
-            hashOps.delete(id.toString());
-        }
+    /**
+     * 删除购物车中商品
+     * @param skuId
+     */
+    public void deleteCart(Long skuId) {
+        //获取登录用户
+        UserInfo userInfo = LoginInterceptor.getLoginUser();
+        String key = KEY_PREFIX + userInfo.getId();
+        this.redisTemplate.opsForHash().delete(key,skuId.toString());
     }
 }

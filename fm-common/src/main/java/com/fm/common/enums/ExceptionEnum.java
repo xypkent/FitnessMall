@@ -55,6 +55,10 @@ public enum ExceptionEnum {
     DELETE_SPEC_GROUP_FAILED(500, "商品规格组删除失败"),
     UPDATE_SPEC_GROUP_FAILED(500, "商品规格组更新失败"),
 
+    CART_IS_FULL(500, "购物车已经满"),
+    CART_NOT_FOUND(500, "购物车没有商品"),
+
+
     ;
     private int code;
     private String msg;

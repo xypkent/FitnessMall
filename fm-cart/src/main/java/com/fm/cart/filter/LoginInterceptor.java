@@ -4,6 +4,7 @@ import com.fm.auth.entity.UserInfo;
 import com.fm.auth.utils.JwtUtils;
 import com.fm.cart.config.JwtProperties;
 import com.fm.common.utils.CookieUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -13,18 +14,13 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@EnableConfigurationProperties(JwtProperties.class)
+@Slf4j
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 
-    @Autowired
     private JwtProperties props;
 
     //定义一个线程域，存放登录的对象
     private static final ThreadLocal<UserInfo> t1 = new ThreadLocal<>();
-
-    public LoginInterceptor() {
-        super();
-    }
 
     public LoginInterceptor(JwtProperties props) {
         this.props = props;
@@ -42,16 +38,26 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         //用户已登录，获取用户信息
         try {
             UserInfo userInfo = JwtUtils.getUserInfo(props.getPublicKey(), token);
-            //放入线程域中
+            //传递user，放入线程域中
+            //不用传递线程名称，系统为了安全会自己去查，以防随便给一个线程名
             t1.set(userInfo);
             return true;
         } catch (Exception e) {
+            log.error("[购物车服务] 解析用户身份失败。",e);
             //抛出异常，未登录
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return false;
         }
     }
 
+    /**
+     * 视图渲染完执行
+     * @param request
+     * @param response
+     * @param handler
+     * @param ex
+     * @throws Exception
+     */
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         //过滤器完成后，从线程域中删除用户信息
