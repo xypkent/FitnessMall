@@ -15,6 +15,7 @@
         <module name="fm-gateway" />
         <module name="fm-item-interface" />
         <module name="fm-item-service" />
+        <module name="fm-order" />
         <module name="fm-page" />
         <module name="fm-registry" />
         <module name="fm-search" />
@@ -36,6 +37,7 @@
       <module name="fm-item" target="1.8" />
       <module name="fm-item-interface" target="1.8" />
       <module name="fm-item-service" target="1.8" />
+      <module name="fm-order" target="1.8" />
       <module name="fm-page" target="1.8" />
       <module name="fm-page2" target="1.8" />
       <module name="fm-registry" target="1.8" />

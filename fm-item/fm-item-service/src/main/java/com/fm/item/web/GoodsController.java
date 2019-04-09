@@ -1,5 +1,6 @@
 package com.fm.item.web;
 
+import com.fm.common.dto.CartDto;
 import com.fm.common.vo.PageResult;
 import com.fm.item.service.GoodsService;
 import com.fm.item.pojo.Sku;
@@ -120,17 +121,17 @@ public class GoodsController {
     public ResponseEntity<Spu> querySpuBySpuId(@PathVariable("id") Long spuId) {
         return ResponseEntity.ok(goodsService.querySpuBySpuId(spuId));
     }
-//
-//    /**
-//     * 减库存
-//     * @param cartDtos
-//     * @return
-//     */
-//    @PostMapping("stock/decrease")
-//    public ResponseEntity<Void> decreaseStock(@RequestBody List<CartDto> cartDtos){
-//        goodsService.decreaseStock(cartDtos);
-//        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//    }
+
+    /**
+     * 减库存
+     * @param cartDtos
+     * @return
+     */
+    @PostMapping("stock/decrease")
+    public ResponseEntity<Void> decreaseStock(@RequestBody List<CartDto> cartDtos){
+        goodsService.decreaseStock(cartDtos);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 
 
 

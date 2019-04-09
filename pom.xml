@@ -19,6 +19,7 @@
         <module>fm-user</module>
         <module>fm-auth-center</module>
         <module>fm-cart</module>
+        <module>fm-order</module>
     </modules>
     <packaging>pom</packaging>
 

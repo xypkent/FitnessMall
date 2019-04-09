@@ -1,6 +1,7 @@
 package com.fm.item.api;
 
 
+import com.fm.common.dto.CartDto;
 import com.fm.common.vo.PageResult;
 import com.fm.item.pojo.Sku;
 import com.fm.item.pojo.Spu;
@@ -46,7 +47,7 @@ public interface GoodsApi {
     List<Sku> querySkuBySpuId(@RequestParam("id") Long id);
 
     /**
-     * 根据sku ids查询sku
+     * 根据sku ids批量查询sku
      * @param ids
      * @return
      */
@@ -62,10 +63,10 @@ public interface GoodsApi {
     @GetMapping("spu/{id}")
     Spu querySpuBySpuId(@PathVariable("id") Long spuId);
 
-//    /**
-//     * 减库存
-//     * @param cartDTOS
-//     */
-//    @PostMapping("stock/decrease")
-//    void decreaseStock(@RequestBody List<CartDto> cartDTOS);
+    /**
+     * 减库存
+     * @param cartDTOS
+     */
+    @PostMapping("stock/decrease")
+    void decreaseStock(@RequestBody List<CartDto> cartDTOS);
 }

@@ -12,6 +12,7 @@
       <module fileurl="file://$PROJECT_DIR$/fm-item/fm-item.iml" filepath="$PROJECT_DIR$/fm-item/fm-item.iml" />
       <module fileurl="file://$PROJECT_DIR$/fm-item/fm-item-interface/fm-item-interface.iml" filepath="$PROJECT_DIR$/fm-item/fm-item-interface/fm-item-interface.iml" />
       <module fileurl="file://$PROJECT_DIR$/fm-item/fm-item-service/fm-item-service.iml" filepath="$PROJECT_DIR$/fm-item/fm-item-service/fm-item-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fm-order/fm-order.iml" filepath="$PROJECT_DIR$/fm-order/fm-order.iml" />
       <module fileurl="file://$PROJECT_DIR$/fm-page/fm-page.iml" filepath="$PROJECT_DIR$/fm-page/fm-page.iml" />
       <module fileurl="file://$PROJECT_DIR$/fm-registry/fm-registry.iml" filepath="$PROJECT_DIR$/fm-registry/fm-registry.iml" />
       <module fileurl="file://$PROJECT_DIR$/fm-search/fm-search.iml" filepath="$PROJECT_DIR$/fm-search/fm-search.iml" />

@@ -1,6 +1,7 @@
 package com.fm.item.service;
 
 
+import com.fm.common.dto.CartDto;
 import com.fm.common.vo.PageResult;
 import com.fm.item.pojo.Sku;
 import com.fm.item.pojo.Spu;
@@ -28,5 +29,5 @@ public interface GoodsService {
 
     List<Sku> querySkusByIds(List<Long> ids);
 
-//    void decreaseStock(List<CartDto> cartDtos);
+    void decreaseStock(List<CartDto> cartDtos);
 }

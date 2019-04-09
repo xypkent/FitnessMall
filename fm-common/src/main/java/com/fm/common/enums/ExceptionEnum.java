@@ -28,8 +28,12 @@ public enum ExceptionEnum {
 
     RECEIVER_ADDRESS_NOT_FOUND(400, "收获地址不存在"),
     ORDER_NOT_FOUND(400, "订单不存在"),
+    ORDER_DETAIL_NOT_FOUND(404, "订单详情不存在"),
+    ORDER_STATUS_NOT_FOUND(404, "订单状态不存在"),
     ORDER_STATUS_EXCEPTION(500, "订单状态异常"),
+    ORDER_CREATE_ERROR(500, "订单创建失败"),
     CREATE_PAY_URL_ERROR(500, "常见支付链接异常"),
+    WX_PAY_ORDER_FAIL(400,"微信下单失败"),
     WX_PAY_SIGN_INVALID(400, "微信支付签名异常"),
     WX_PAY_NOTIFY_PARAM_ERROR(400, "微信支付回调参数异常"),
 
@@ -40,8 +44,6 @@ public enum ExceptionEnum {
     CREATE_TOKEN_ERROR(400, "用户凭证生成失败"),
     VERIFY_CODE_NOT_MATCHING(400, "验证码错误"),
     UNAUTHORIZED(403,"未授权"),
-//    PASSWORD_NOT_MATCHING(400, "密码错误"),
-//    USER_NOT_EXIST(404, "用户不存在"),
 
     SPEC_PARAM_NOT_FOUND(204, "规格参数查询失败"),
     UPDATE_SPEC_PARAM_FAILED(500, "商品规格参数更新失败"),
@@ -57,6 +59,7 @@ public enum ExceptionEnum {
 
     CART_IS_FULL(500, "购物车已经满"),
     CART_NOT_FOUND(500, "购物车没有商品"),
+
 
 
     ;

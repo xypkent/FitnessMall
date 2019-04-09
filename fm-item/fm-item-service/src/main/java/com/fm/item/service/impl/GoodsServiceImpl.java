@@ -1,5 +1,6 @@
 package com.fm.item.service.impl;
 
+import com.fm.common.dto.CartDto;
 import com.fm.common.enums.ExceptionEnum;
 import com.fm.common.exception.FmException;
 import com.fm.common.vo.PageResult;
@@ -253,16 +254,16 @@ public class GoodsServiceImpl implements GoodsService {
         return skus;
     }
 
-//    @Transactional
-//    @Override
-//    public void decreaseStock(List<CartDto> cartDtos) {
-//        for (CartDto cartDto : cartDtos) {
-//            int count = stockMapper.decreaseStock(cartDto.getSkuId(), cartDto.getNum());
-//            if (count != 1) {
-//                throw new FmException(ExceptionEnum.STOCK_NOT_ENOUGH);
-//            }
-//        }
-//    }
+    @Transactional
+    @Override
+    public void decreaseStock(List<CartDto> cartDtos) {
+        for (CartDto cartDto : cartDtos) {
+            int count = stockMapper.decreaseStock(cartDto.getSkuId(), cartDto.getNum());
+            if (count != 1) {
+                throw new FmException(ExceptionEnum.STOCK_NOT_ENOUGH);
+            }
+        }
+    }
 
     private void fillStock(List<Long> ids, List<Sku> skus) {
         //批量查询库存
