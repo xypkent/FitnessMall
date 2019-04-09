@@ -31,6 +31,7 @@ public enum ExceptionEnum {
     ORDER_DETAIL_NOT_FOUND(404, "订单详情不存在"),
     ORDER_STATUS_NOT_FOUND(404, "订单状态不存在"),
     ORDER_STATUS_EXCEPTION(500, "订单状态异常"),
+    UPDATE_ORDER_STATUS_ERROR(400, "更新订单状态失败"),
     ORDER_CREATE_ERROR(500, "订单创建失败"),
     CREATE_PAY_URL_ERROR(500, "常见支付链接异常"),
     WX_PAY_ORDER_FAIL(400,"微信下单失败"),

@@ -63,7 +63,7 @@ public class OrderController {
      */
     @GetMapping("state/{id}")
     public ResponseEntity<Integer> queryOrderStateByOrderId(@PathVariable("id") Long orderId) {
-        return ResponseEntity.ok(payLogService.queryOrderStateByOrderId(orderId));
+        return ResponseEntity.ok(payLogService.queryOrderStateByOrderId(orderId).getValue());
     }
 
     /**

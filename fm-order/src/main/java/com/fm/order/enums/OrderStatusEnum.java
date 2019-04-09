@@ -1,4 +1,4 @@
-package com.fm.order.dto;
+package com.fm.order.enums;
 
 public enum  OrderStatusEnum {
 

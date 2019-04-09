@@ -3,14 +3,13 @@ package com.fm.order.utils;
 import com.fm.common.enums.ExceptionEnum;
 import com.fm.common.exception.FmException;
 import com.fm.order.config.PayConfig;
-import com.fm.order.dto.OrderStatusEnum;
-import com.fm.order.dto.PayStateEnum;
+import com.fm.order.enums.OrderStatusEnum;
+import com.fm.order.enums.PayStateEnum;
 import com.fm.order.mapper.OrderMapper;
 import com.fm.order.mapper.OrderStatusMapper;
 import com.fm.order.mapper.PayLogMapper;
 import com.fm.order.pojo.Order;
 import com.fm.order.pojo.OrderStatus;
-import com.fm.order.pojo.PayLog;
 import com.github.wxpay.sdk.WXPay;
 import com.github.wxpay.sdk.WXPayConstants;
 import com.github.wxpay.sdk.WXPayUtil;
@@ -100,19 +99,9 @@ public class PayHelper {
             //将结果处理成map
             Map<String, String> result = WXPayUtil.xmlToMap(xml);
 
+            //判断通信和业务标识
+            isSuccess(result);
 
-            //通信失败
-            if (FAIL.equals(result.get("return_code"))) {
-                log.error("【微信下单】与微信通信失败，失败信息：{}", result.get("return_msg"));
-                throw new FmException(ExceptionEnum.WX_PAY_ORDER_FAIL);
-            }
-
-            //下单失败
-            if (FAIL.equals(result.get("result_code"))) {
-                log.error("【微信下单】创建预交易订单失败，错误码：{}，错误信息：{}",
-                        result.get("err_code"), result.get("err_code_des"));
-                throw new FmException(ExceptionEnum.WX_PAY_ORDER_FAIL);
-            }
 
             //检验签名
             isSignatureValid(result);
@@ -133,6 +122,21 @@ public class PayHelper {
         }
     }
 
+    public void isSuccess(Map<String, String> result) {
+        //通信失败
+        if (FAIL.equals(result.get("return_code"))) {
+            log.error("【微信下单】与微信通信失败，失败信息：{}", result.get("return_msg"));
+            throw new FmException(ExceptionEnum.WX_PAY_ORDER_FAIL);
+        }
+
+        //下单失败
+        if (FAIL.equals(result.get("result_code"))) {
+            log.error("【微信下单】创建预交易订单失败，错误码：{}，错误信息：{}",
+                    result.get("err_code"), result.get("err_code_des"));
+            throw new FmException(ExceptionEnum.WX_PAY_ORDER_FAIL);
+        }
+    }
+
     /**
      * 检验签名
      *
@@ -140,6 +144,7 @@ public class PayHelper {
      */
     private void isSignatureValid(Map<String, String> result) {
         try {
+            //重新生成并比较
             boolean boo1 = WXPayUtil.isSignatureValid(result, payConfig.getKey(), WXPayConstants.SignType.HMACSHA256);
             boolean boo2 = WXPayUtil.isSignatureValid(result, payConfig.getKey(), WXPayConstants.SignType.MD5);
 
@@ -158,6 +163,10 @@ public class PayHelper {
      * @param msg
      */
     public void handleNotify(Map<String, String> msg) {
+
+        //判断通信和业务标识
+        isSuccess(msg);
+
         //检验签名
         isSignatureValid(msg);
 
@@ -191,25 +200,30 @@ public class PayHelper {
             return;
         }
 
-        //修改支付日志状态
-        PayLog payLog = payLogMapper.selectByPrimaryKey(order.getOrderId());
-        //未支付的订单才需要更改
-        if (payLog.getStatus() == PayStateEnum.NOT_PAY.getValue()) {
-            payLog.setOrderId(order.getOrderId());
-            payLog.setBankType(bankType);
-            payLog.setPayTime(new Date());
-            payLog.setTransactionId(transactionId);
-            payLog.setStatus(PayStateEnum.SUCCESS.getValue());
-            payLogMapper.updateByPrimaryKeySelective(payLog);
+//        //修改支付日志状态
+//        PayLog payLog = payLogMapper.selectByPrimaryKey(order.getOrderId());
+//        //未支付的订单才需要更改
+//        if (payLog.getStatus() == PayStateEnum.NOT_PAY.getValue()) {
+//            payLog.setOrderId(order.getOrderId());
+//            payLog.setBankType(bankType);
+//            payLog.setPayTime(new Date());
+//            payLog.setTransactionId(transactionId);
+//            payLog.setStatus(PayStateEnum.SUCCESS.getValue());
+//            payLogMapper.updateByPrimaryKeySelective(payLog);
+//        }
+
+        //更新订单状态
+        OrderStatus newOrderStatus = new OrderStatus();
+        newOrderStatus.setStatus(OrderStatusEnum.PAY_UP.value());
+        newOrderStatus.setOrderId(order.getOrderId());
+        newOrderStatus.setPaymentTime(new Date());
+        int count = statusMapper.updateByPrimaryKeySelective(newOrderStatus);
+        if (count != 1){//更新订单失败
+            throw new FmException(ExceptionEnum.UPDATE_ORDER_STATUS_ERROR);
         }
 
+        log.info("[订单回调]，订单支付成功！订单编号：{}",outTradeNo);
 
-        //修改订单状态
-        OrderStatus orderStatus1 = new OrderStatus();
-        orderStatus1.setStatus(OrderStatusEnum.PAY_UP.value());
-        orderStatus1.setOrderId(order.getOrderId());
-        orderStatus1.setPaymentTime(new Date());
-        statusMapper.updateByPrimaryKeySelective(orderStatus1);
     }
 
 
@@ -220,10 +234,13 @@ public class PayHelper {
      * @return
      */
     public PayStateEnum queryPayState(Long orderId) {
+        //组织请求参数
         Map<String, String> data = new HashMap<>();
+        //订单号
         data.put("out_trade_no", orderId.toString());
         try {
             Map<String, String> result = wxPay.orderQuery(data);
+            //校验状态
             if (CollectionUtils.isEmpty(result) || WXPayConstants.FAIL.equals(result.get("return_code"))) {
                 //未查询到结果，或连接失败
                 log.error("【支付状态查询】链接微信服务失败，订单编号：{}", orderId);
@@ -241,11 +258,12 @@ public class PayHelper {
 
             //查询支付状态
             String state = result.get("trade_state");
-            if (StringUtils.equals("SUCCESS", state)) {
+            if (StringUtils.equals(SUCCESS, state)) {
                 //支付成功, 修改支付状态等信息
                 handleNotify(result);
                 return PayStateEnum.SUCCESS;
-            } else if (StringUtils.equals("USERPAYING", state) || StringUtils.equals("NOTPAY", state)) {
+            } else if (StringUtils.equals("USERPAYING", state)
+                       || StringUtils.equals("NOTPAY", state)) {
                 //未支付成功
                 return PayStateEnum.NOT_PAY;
             } else {
