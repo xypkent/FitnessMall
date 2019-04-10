@@ -47,6 +47,7 @@ fm:
     - /api/user/check
     - /api/user/code
     - /api/item
+    - /zuul/api/upload/image #上传图片的接口设置为不拦截
 hystrix:
   command:
     default:
