@@ -1,5 +1,6 @@
 package com.fm.item.web;
 
+import com.fm.item.pojo.ChildCates;
 import com.fm.item.service.BrandService;
 import com.fm.item.service.CategoryService;
 import com.fm.item.pojo.Category;
@@ -61,4 +62,16 @@ public class CategoryController {
     public ResponseEntity<List<Category>> queryAllByCid3(@RequestParam("id") Long id) {
         return ResponseEntity.ok(categoryService.queryAllByCid3(id));
     }
+
+    /**
+     * 根据顶级分类id查询二、三级分类（隐藏功能，用于首页分类展示）
+     * @param id
+     * @return
+     */
+    @GetMapping("childLists")
+    public ResponseEntity<List<ChildCates>> queryChilds(@RequestParam("id") Long id) {
+        return ResponseEntity.ok(categoryService.queryChilds(id));
+    }
+
+
 }

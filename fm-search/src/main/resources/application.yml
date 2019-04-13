@@ -22,3 +22,7 @@ eureka:
   instance:
     prefer-ip-address: true
     ip-address: 127.0.0.1
+fm:
+  jwt:
+    pubKeyPath: D:\\FitnessMall\\id_rsa.pub # 公钥地址
+    cookieName: FM_TOKEN # cookie的名称
