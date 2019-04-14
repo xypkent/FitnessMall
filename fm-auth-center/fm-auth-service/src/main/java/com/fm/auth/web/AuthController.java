@@ -72,7 +72,9 @@ public class AuthController {
             //将新的Token写入cookie中，并设置httpOnly(避免Js代码操作你的Cookies)
             //cookie不允许跨域
             //设置request 为了得到domain(例如www.fm.com)防止其他网站的来访问
-            CookieUtils.newBuilder(response).httpOnly()
+//            CookieUtils.newBuilder(response).httpOnly()
+            //todo 为了使前端页面可以注销，没有使用httpOnly()
+            CookieUtils.newBuilder(response)
                     .maxAge(props.getCookieMaxAge()).request(request)
                     .build(props.getCookieName(), newToken);
             return ResponseEntity.ok(userInfo);

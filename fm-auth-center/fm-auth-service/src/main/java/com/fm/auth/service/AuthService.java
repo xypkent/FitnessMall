@@ -33,7 +33,7 @@ public class AuthService {
                 throw new FmException(ExceptionEnum.USERNAME_OR_PASSWORD_ERROR);
             }
 
-            UserInfo userInfo = new UserInfo(user.getId(), user.getUsername());
+            UserInfo userInfo = new UserInfo(user.getId(), user.getUsername(),user.getTag());
             //生成Token
             String token = JwtUtils.generateToken(userInfo, props.getPrivateKey(), props.getExpire());
             return token;

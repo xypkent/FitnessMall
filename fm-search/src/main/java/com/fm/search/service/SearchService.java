@@ -35,7 +35,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -199,8 +198,9 @@ public class SearchService {
         /**
          * 判断是否有搜索条件，如果没有，直接返回null。不允许搜索全部商品
          */
-        if (StringUtils.isBlank(key)) {
-            throw new FmException(ExceptionEnum.INVALID_PARAM);
+        if (StringUtils.isBlank(key)) {//默认搜索关键词“健身”
+//            throw new FmException(ExceptionEnum.INVALID_PARAM);
+            searchRequest.setKey("健身");
         }
 
         //NativeSearchQueryBuilder：Spring提供的一个查询条件构建器，帮助构建json格式的请求体
@@ -378,6 +378,10 @@ public class SearchService {
 
         //过滤条件
         Map<String, String> filterMap = request.getFilter();
+
+        //智能定制化查询
+//        UserInfo loginUser = LoginInterceptor.getLoginUser();
+//        filterMap.put("适用人群",loginUser.getTag().split(",")[0]);
 
         if (!CollectionUtils.isEmpty(filterMap)) {
             for (Map.Entry<String, String> entry : filterMap.entrySet()) {

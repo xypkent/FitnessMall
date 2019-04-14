@@ -32,4 +32,5 @@ public class User {
     @JsonIgnore
     private String salt;// 密码的盐值
 
+    private String tag;// 用户标签
 }
