@@ -15,10 +15,31 @@ public class FmPageController {
     @Autowired
     private PageService pageService;
 
-    @GetMapping("item/{id}.html")
-    public String toItemPage(@PathVariable("id") Long spuId, Model model) {
-        Map<String, Object> attributes = pageService.loadModel(spuId);
+    /**
+     * 查询详情页并记录用户足迹
+     * @param spuId
+     * @param model
+     * @return
+     */
+    @GetMapping("item/{id}-{userId}.html")
+    public String toItemPage(@PathVariable("id") Long spuId,@PathVariable Long userId, Model model) {
+        Map<String, Object> attributes = pageService.loadModelAndFootPrint(spuId,userId);
         model.addAllAttributes(attributes);
         return "item";
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

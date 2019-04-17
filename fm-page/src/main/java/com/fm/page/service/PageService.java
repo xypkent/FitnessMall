@@ -7,6 +7,8 @@ import com.fm.page.client.BrandClient;
 import com.fm.page.client.CategoryClient;
 import com.fm.page.client.GoodsClient;
 import com.fm.page.client.SpecClient;
+import com.fm.page.mapper.FootPrintMapper;
+import com.fm.page.pojo.FootPrint;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,10 +18,7 @@ import org.thymeleaf.context.Context;
 
 import java.io.File;
 import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -38,11 +37,35 @@ public class PageService {
     private SpecClient specClient;
 
     @Autowired
+    private FootPrintMapper footPrintMapper;
+
+    @Autowired
     private TemplateEngine templateEngine;
 
     @Value("${fm.page.path}")
     private String dest;
 
+    public Map<String, Object> loadModelAndFootPrint(Long spuId,Long userId) {
+
+        Map<String, Object> map = loadModel(spuId);
+
+        //添加用户痕迹
+        FootPrint fp = new FootPrint();
+
+        fp.setUserId(0L);
+        if (userId != null)
+            fp.setUserId(userId);
+
+        fp.setSpuId(spuId);
+        SpuDetail detail = (SpuDetail)map.get("detail");
+        fp.setGenericSpec(detail.getGenericSpec());
+        fp.setSpecialSpec(detail.getSpecialSpec());
+        fp.setAddTime(new Date());
+        fp.setDeleted(false);
+        footPrintMapper.insert(fp);
+
+        return map;
+    }
     public Map<String, Object> loadModel(Long spuId) {
         Map<String, Object> model = new HashMap<>();
 
@@ -70,6 +93,7 @@ public class PageService {
         model.put("skus", skus);
         model.put("detail", detail);
         model.put("specs", specs);
+
         return model;
     }
 

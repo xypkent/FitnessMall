@@ -3,6 +3,10 @@ server:
 spring:
   application:
     name: search-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/fitnessmall
+    username: root
+    password: 123456
   data:
     elasticsearch:
       cluster-name: elasticsearch
@@ -26,3 +30,8 @@ fm:
   jwt:
     pubKeyPath: D:\\FitnessMall\\id_rsa.pub # 公钥地址
     cookieName: FM_TOKEN # cookie的名称
+#查看SQL语句
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true

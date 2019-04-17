@@ -106,6 +106,11 @@ public class GoodsController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    /**
+     * 上下架操作
+     * @param spu
+     * @return
+     */
     @PutMapping("spu/saleable")
     public ResponseEntity<Void> handleSaleable(@RequestBody Spu spu) {
         goodsService.handleSaleable(spu);

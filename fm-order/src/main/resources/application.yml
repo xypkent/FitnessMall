@@ -48,5 +48,5 @@ fm:
     key: T6m9iK73b0kn9g5v426MKfHQH7X8rKwb
     connectTimeoutMs: 5000
     readTimeoutMs: 10000
-    notifyUrl: http://593em6.natappfree.cc/wxpay/notify #需要一个外网的地址
+    notifyUrl: http://593em6.natappfree.cc/wxpay/notify #需要一个外网的地址，接收微信支付回调
 

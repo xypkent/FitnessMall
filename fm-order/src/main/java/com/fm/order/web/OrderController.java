@@ -76,7 +76,6 @@ public class OrderController {
     @GetMapping("list")
     public ResponseEntity<PageResult<Order>> queryOrderByPage(@RequestParam("page") Integer page,
                                                               @RequestParam("rows") Integer rows) {
-
         return ResponseEntity.ok(orderService.queryOrderByPage(page, rows));
     }
 
