@@ -58,7 +58,7 @@ public class GoodsServiceImpl implements GoodsService {
             criteria.andLike("title", "%" + key + "%");
         }
         if (saleable != null) {
-            criteria.orEqualTo("saleable", saleable);
+            criteria.andEqualTo("saleable", saleable);
         }
         //默认以上一次更新时间排序
         example.setOrderByClause("last_update_time desc");
